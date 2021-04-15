@@ -2,14 +2,22 @@
 
 
 (define (pyramid s1)
-  (define two-s (hc-append s1 s1))
-  (vc-append s1 two-s)
+  (vc-append s1  (hc-append s1 s1))
   )
-(pyramid (circle 10))
+;(pyramid (circle 3))
 
-(define (nested-pyramid s1 d)
-  [ d (pyramid s1)]
+; known as a Sierpinski triangle
+(define (nested-pyramids s1 n)
+  (if (zero? n)
+    (pyramid s1) ;Get to the bottom of the recusion
+    (let
+        ([p (nested-pyramids s1 (- n 1))])  ;Recursively call nested-pyramids
+        (vc-append p (hc-append p p))  ;draw the pyramid of pyramids as you unwind the recusive stack
+      )
+    )
   )
-
-(nested-pyramid (circle 10) 2)
-
+; Test cases
+(nested-pyramids (circle 10) 1)
+(nested-pyramids (circle 10) 2)
+(nested-pyramids (circle 10) 3)
+(nested-pyramids (circle 10) 4)
